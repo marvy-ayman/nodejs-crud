@@ -17,7 +17,7 @@
       "description": "Local development server"
     },
     {
-      "url": "https://api.staging.example.com",
+      "url": "https://wild-blue-pronghorn-sock.cyclic.app/",
       "description": "Staging environment"
     },
     {
