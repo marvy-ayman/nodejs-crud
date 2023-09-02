@@ -1,0 +1,345 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Simple Todos API",
+    "description": "A simple todos API",
+    "contact": {
+      "name": "marvy ayman",
+      "email": "marvyayman05@gmail.com",
+      "url": "web.com"
+    }
+  },
+  "basePath": "/",
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    },
+    {
+      "url": "https://api.staging.example.com",
+      "description": "Staging environment"
+    },
+    {
+      "url": "https://api.example.com",
+      "description": "Production environment"
+    }
+  ],
+  "tags": [
+    {
+      "name" : "Default Route"
+    },
+    {
+      "name": "Todo CRUD operations"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "id": {
+        "type": "integer",
+        "description": "An id of a todo",
+        "example": "1"
+      },
+      "Todo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Todo identification number",
+            "example": "1"
+          },
+          "name": {
+            "type": "string",
+            "description": "Todo's title",
+            "example": "Coding in JavaScript"
+          },
+          "description": {
+            "type": "string",
+            "description": "Todo's description",
+            "example": "Coding in JavaScript is awesome"
+          }
+        }
+      },
+      "NoteInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Todo's title",
+            "example": "Coding in JavaScript"
+          },
+          "description": {
+            "type": "string",
+            "description": "Todo'description",
+            "example": "Coding in JavaScript is awesome"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Not found"
+          },
+          "internal_code": {
+            "type": "string",
+            "description": "Error internal code",
+            "example": "Invalid parameters"
+          },
+          "not_found": {
+            "type": "string",
+            "description": "missing parameter values",
+            "example": "Missing values"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Default Route"
+        ],
+        "description": "test api connection",
+        "operationId": "TestApi",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Hello, World!"
+                }
+              }
+            }
+          }
+        }
+      }
+      
+    },
+    "/api/create":{
+      "post": {
+        "tags": [
+          "Todo CRUD operations"
+        ],
+        "description": "create note",
+        "operationId": "createNote",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          
+          "200": {
+            "description": "note created successfully"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "402":{
+            "description":"parsing error"
+          },
+          "404":{
+            "description":"Not found"
+          },
+          "400":{
+            "description":"Bad Request"
+          }
+        }
+      }
+    },
+    "/api/notes":{
+      "get": {
+        "tags": [
+          "Todo CRUD operations"
+        ],
+        "description": "Get all notes",
+        "operationId": "getNotes",
+        "responses": {
+          
+          "200": {
+            "description": "note get all successfully",
+            "content": {
+              
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402":{
+            "description":"parsing error"
+          },
+          "404":{
+            "description":"Not found"
+          },
+          "400":{
+            "description":"Bad Request"
+          }
+        }
+      }
+    },
+    "/api/notes/{id}":{
+      "get": {
+        "tags": [
+          "Todo CRUD operations"
+        ],
+        "description": "Get spesific notes",
+        "operationId": "getNote",
+        "parameters": [
+          {
+            "name": "id", 
+            "in": "path", 
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            },
+            "required": true, 
+            "description": "Id of todo to be updated"
+          }
+        ],
+        "responses": {
+          
+          "200": {
+            "description": "note get successfully",
+            "content": {
+              
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402":{
+            "description":"parsing error"
+          },
+          "404":{
+            "description":"Not found"
+          },
+          "400":{
+            "description":"Bad Request"
+          }
+        }
+      }
+    },
+    "/api/update/{id}":{
+      "patch": {
+        "tags": [
+          "Todo CRUD operations"
+        ],
+        "description": "update note",
+        "operationId": "updateNote",
+        "parameters": [
+          {
+            "name": "id", 
+            "in": "path", 
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            },
+            "required": true, 
+            "description": "Id of todo to be updated"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          
+          "200": {
+            "description": "note updated successfully"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "402":{
+            "description":"parsing error"
+          },
+          "404":{
+            "description":"Not found"
+          },
+          "400":{
+            "description":"Bad Request"
+          }
+        }
+      }
+    },
+    "/api/delete/{id}":{
+      "delete": {
+        "tags": [
+          "Todo CRUD operations"
+        ],
+        "description": "delete note",
+        "operationId": "deleteNote",
+        "parameters": [
+          {
+            "name": "id", 
+            "in": "path", 
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            },
+            "required": true, 
+            "description": "Id of todo to be updated"
+          }
+        ],
+        "responses": {
+          
+          "200": {
+            "description": "note deleted successfully"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "402":{
+            "description":"parsing error"
+          },
+          "404":{
+            "description":"Not found"
+          },
+          "400":{
+            "description":"Bad Request"
+          }
+        }
+      }
+    }
+  }
+}
